@@ -34,9 +34,15 @@
 
     <main class="page-body">
       <section class="page-body-section">
-        <h2>Overview</h2>
-        <p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae. Proin vel ante a dui semper porttitor. Quisque porta volutpat lacinia. Erat vestibulum mattis augue penatibus magnis dis parturient montes nascetur ridiculus mus.</p>
-        <p>Donec quam felis, ultrices nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.</p>
+        <h2>Layout strategy</h2>
+        <p>The detail header has two layouts: <strong>side-by-side</strong>, where the description and properties sit in equal-width columns with a 40px gap, and <strong>stacked</strong>, where the description appears on top and the properties below in a single column.</p>
+        <h3>Adaptive stacking</h3>
+        <p>After the page renders, we measure the pixel height of both columns and compute the ratio as <em>left ÷ right</em>. If the ratio falls below a threshold, the layout switches to the stacked layout.</p>
+        <h3>Line clamping</h3>
+        <p>The description is clamped to a set number of lines. The ratio is calculated against the clamped height. Expanding via "Show more" does not affect the layout decision.</p>
+        <h3>Prototype note</h3>
+        <p>In this prototype, the layout can switch between side-by-side and stacked as you adjust the controls. When the layout is already stacked, the description column is full-width and therefore shorter than it would be in side-by-side mode. To keep the ratio calculation meaningful, we double the stacked description height as a rough estimate of its side-by-side height.</p>
+        <p>In production this adjustment is unnecessary, since the layout is determined once on page load and does not change.</p>
       </section>
       <section class="page-body-section">
         <h2>Methods</h2>
