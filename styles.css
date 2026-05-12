@@ -5,12 +5,12 @@
 }
 
 :root {
-  --page-max-width: 1100px;
+  --page-max-width: 1200px;
   --page-padding-x: 64px;
   --page-padding-y: 56px;
-  --col-gap: 64px;
+  --col-gap: 40px;
   --desc-col-width: 1fr;
-  --props-col-width: 440px;
+  --props-col-width: 1fr;
 
   --color-bg: #253578;
   --color-text: #ffffff;
@@ -27,24 +27,81 @@
   --font-size-prop-value: 0.875rem;
 
   --line-height-body: 1.65;
-  --prop-row-gap: 14px;
+  --prop-row-gap: 6px;
   --prop-col-gap: 24px;
 }
 
 body {
   font-family: var(--font-sans);
-  background: var(--color-bg);
-  color: var(--color-text);
+  background: #ffffff;
+  color: #111827;
   min-height: 100vh;
-  padding-bottom: 140px;
 }
 
 /* ── Page shell ── */
 
 .page {
+  position: relative;
+  background: var(--color-bg);
+  padding: var(--page-padding-y) var(--page-padding-x);
+  padding-bottom: calc(var(--page-padding-y) + 16px);
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('/images/header container.png');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.page > * {
+  position: relative;
+  max-width: var(--page-max-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ── Page body (white section below header) ── */
+
+.page-body {
   max-width: var(--page-max-width);
   margin: 0 auto;
-  padding: var(--page-padding-y) var(--page-padding-x);
+  padding: 56px 0 140px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.page-body-section h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #111827;
+  margin-bottom: 16px;
+}
+
+.page-body-section h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+  margin-top: 24px;
+  margin-bottom: 10px;
+}
+
+.page-body-section p {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: #4b5563;
+  max-width: 720px;
+  margin-bottom: 12px;
+}
+
+.page-body-section p:last-child {
+  margin-bottom: 0;
 }
 
 /* ── Entity header ── */
@@ -69,7 +126,7 @@ body {
   line-height: 1.25;
   letter-spacing: -0.01em;
   color: #ffffff;
-  max-width: 820px;
+  max-width: none;
 }
 
 /* ── Two-column detail grid ── */
@@ -79,6 +136,10 @@ body {
   grid-template-columns: var(--desc-col-width) var(--props-col-width);
   gap: var(--col-gap);
   align-items: start;
+}
+
+.detail-grid.is-stacked {
+  grid-template-columns: 1fr;
 }
 
 /* ── Description column ── */
@@ -154,8 +215,6 @@ body {
   color: #e5e7eb;
   border-radius: 12px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-  min-width: 420px;
-  max-width: 580px;
   width: max-content;
   font-size: 0.8125rem;
   font-family: var(--font-sans);
@@ -199,11 +258,45 @@ body {
 }
 
 .config-body {
-  padding: 14px 16px;
+  padding: 24px;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+
+.config-section {
   display: flex;
   align-items: flex-end;
   gap: 20px;
   flex-wrap: wrap;
+  padding: 0 16px;
+}
+
+.config-section:first-child {
+  padding-left: 0;
+}
+
+.config-section:last-child {
+  padding-right: 0;
+}
+
+.config-section--column {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.config-line {
+  display: flex;
+  gap: 6px;
+  align-items: flex-end;
+}
+
+.config-divider {
+  width: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  align-self: stretch;
+  flex-shrink: 0;
 }
 
 .config-row {
@@ -238,6 +331,35 @@ body {
 
 .config-row input[type="number"]:focus {
   border-color: rgba(147, 197, 253, 0.6);
+}
+
+.ratio-display {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #e5e7eb;
+  letter-spacing: 0.02em;
+}
+
+.preset-btns {
+  display: flex;
+  gap: 6px;
+}
+
+.preset-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  color: #e5e7eb;
+  font-size: 0.75rem;
+  font-weight: 500;
+  font-family: var(--font-sans);
+  padding: 5px 10px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.preset-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
 }
 
 .apply-btn {

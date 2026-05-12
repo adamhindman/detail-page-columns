@@ -71,7 +71,17 @@ let state = {
   lineClamp: 4,
   numProps: 8,
   expanded: false,
+  descText: '',
+  props: [],
 };
+
+function generateContent() {
+  state.descText = loremWords(state.descWords);
+  state.props = Array.from({ length: state.numProps }, () => ({
+    key: randomKey(),
+    value: randomValue(),
+  }));
+}
 
 // ── Render ─────────────────────────────────────────────────────────────────
 
@@ -83,6 +93,27 @@ function renderPage() {
 
   renderDescription();
   renderProperties();
+  updateRatio();
+}
+
+function updateRatio() {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      document.fonts.ready.then(() => {
+        const grid = document.querySelector('.detail-grid');
+        const descCol = document.querySelector('.description-col');
+        const wasStacked = grid.classList.contains('is-stacked');
+        const leftH = descCol.offsetHeight;
+        const rightH = document.querySelector('.properties-col').offsetHeight;
+        const estimatedLeftH = wasStacked ? leftH * 2 : leftH;
+        const cutoff = parseFloat(document.getElementById('ctrl-ratio-cutoff').value) || 0.67;
+        grid.classList.toggle('is-stacked', estimatedLeftH / rightH < cutoff);
+        document.getElementById('ratio-display').textContent = (estimatedLeftH / rightH).toFixed(2);
+        document.getElementById('left-height-display').textContent = wasStacked ? `~${estimatedLeftH}px` : `${leftH}px`;
+        document.getElementById('right-height-display').textContent = `${rightH}px`;
+      });
+    });
+  });
 }
 
 function renderDescription() {
@@ -90,7 +121,7 @@ function renderDescription() {
   const text = document.getElementById('description-text');
   const btn = document.getElementById('show-more-btn');
 
-  const descText = loremWords(state.descWords);
+  const descText = state.descText;
   text.textContent = descText;
 
   // Remove inline clamp style first
@@ -117,14 +148,14 @@ function renderProperties() {
   const list = document.getElementById('property-list');
   list.innerHTML = '';
 
-  for (let i = 0; i < state.numProps; i++) {
+  for (const { key, value } of state.props) {
     const dt = document.createElement('dt');
     dt.className = 'prop-key';
-    dt.textContent = randomKey();
+    dt.textContent = key;
 
     const dd = document.createElement('dd');
     dd.className = 'prop-value';
-    dd.textContent = randomValue();
+    dd.textContent = value;
 
     list.appendChild(dt);
     list.appendChild(dd);
@@ -152,13 +183,41 @@ document.getElementById('show-more-btn').addEventListener('click', () => {
 
 // ── Config panel ───────────────────────────────────────────────────────────
 
-document.getElementById('apply-btn').addEventListener('click', () => {
-  state.entityType = randomEntityType();
-  state.title = randomTitle();
+function readInputs() {
   state.descWords = Math.max(0, parseInt(document.getElementById('ctrl-desc-words').value, 10) || 0);
   state.lineClamp = Math.max(0, parseInt(document.getElementById('ctrl-line-clamp').value, 10) || 0);
   state.numProps = Math.max(0, parseInt(document.getElementById('ctrl-num-props').value, 10) || 0);
+}
+
+document.getElementById('apply-btn').addEventListener('click', () => {
+  state.entityType = randomEntityType();
+  state.title = randomTitle();
+  readInputs();
+  generateContent();
   renderPage();
+});
+
+['ctrl-desc-words', 'ctrl-line-clamp', 'ctrl-num-props'].forEach(id => {
+  document.getElementById(id).addEventListener('input', () => {
+    readInputs();
+    generateContent();
+    renderPage();
+  });
+});
+
+document.getElementById('ctrl-ratio-cutoff').addEventListener('input', updateRatio);
+
+document.querySelectorAll('.preset-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.getElementById('ctrl-desc-words').value = btn.dataset.words;
+    document.getElementById('ctrl-line-clamp').value = btn.dataset.clamp;
+    document.getElementById('ctrl-num-props').value = btn.dataset.props;
+    state.descWords = +btn.dataset.words;
+    state.lineClamp = +btn.dataset.clamp;
+    state.numProps = +btn.dataset.props;
+    generateContent();
+    renderPage();
+  });
 });
 
 document.getElementById('config-toggle').addEventListener('click', () => {
@@ -167,4 +226,5 @@ document.getElementById('config-toggle').addEventListener('click', () => {
 
 // ── Init ───────────────────────────────────────────────────────────────────
 
+generateContent();
 renderPage();

@@ -32,25 +32,81 @@
       </div>
     </div>
 
+    <main class="page-body">
+      <section class="page-body-section">
+        <h2>Overview</h2>
+        <p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae. Proin vel ante a dui semper porttitor. Quisque porta volutpat lacinia. Erat vestibulum mattis augue penatibus magnis dis parturient montes nascetur ridiculus mus.</p>
+        <p>Donec quam felis, ultrices nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.</p>
+      </section>
+      <section class="page-body-section">
+        <h2>Methods</h2>
+        <p>Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>
+        <h3>Data Collection</h3>
+        <p>Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui.</p>
+        <h3>Analysis Pipeline</h3>
+        <p>Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus.</p>
+      </section>
+      <section class="page-body-section">
+        <h2>Results</h2>
+        <p>Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna.</p>
+        <p>Sed consequat, leo eget bibendum sodales, augue velit cursus nunc, quis gravida magna mi a libero. Fusce vulputate eleifend sapien. Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus.</p>
+      </section>
+    </main>
+
     <div class="config-panel" id="config-panel">
       <div class="config-panel-header">
         <span class="config-panel-title">Layout Controls</span>
         <button class="config-toggle" id="config-toggle" aria-label="Collapse controls">▾</button>
       </div>
       <div class="config-body" id="config-body">
-        <div class="config-row">
-          <label for="ctrl-desc-words">Description words</label>
-          <input type="number" id="ctrl-desc-words" min="0" max="1000" value="120" />
+        <div class="config-section config-section--column">
+          <div class="config-line">
+            <div class="config-row">
+              <label for="ctrl-desc-words">Desc words</label>
+              <input type="number" id="ctrl-desc-words" min="0" max="1000" value="120" />
+            </div>
+            <div class="config-row">
+              <label for="ctrl-line-clamp">Line clamp</label>
+              <input type="number" id="ctrl-line-clamp" min="0" max="20" value="4" />
+            </div>
+            <div class="config-row">
+              <label for="ctrl-num-props">Properties</label>
+              <input type="number" id="ctrl-num-props" min="0" max="30" value="8" />
+            </div>
+            <div class="config-row">
+              <label>Stack if ratio below</label>
+              <input type="number" id="ctrl-ratio-cutoff" min="0.1" step="0.05" value="0.67" />
+            </div>
+          </div>
+          <div class="config-line">
+            <div class="config-row">
+              <label>Presets</label>
+              <div class="preset-btns">
+                <button class="preset-btn" data-words="120" data-clamp="10" data-props="8">Balanced</button>
+                <button class="preset-btn" data-words="3" data-clamp="10" data-props="8">Short desc</button>
+                <button class="preset-btn" data-words="120" data-clamp="10" data-props="2">Short props</button>
+              </div>
+            </div>
+          </div>
+          <button class="apply-btn" id="apply-btn" hidden>Regenerate</button>
         </div>
-        <div class="config-row">
-          <label for="ctrl-line-clamp">Line clamp <span class="hint">(0 = off)</span></label>
-          <input type="number" id="ctrl-line-clamp" min="0" max="20" value="4" />
+        <div class="config-divider"></div>
+        <div class="config-section config-section--column">
+          <div class="config-line">
+            <div class="config-row">
+              <label>Left height</label>
+              <span class="ratio-display" id="left-height-display">—</span>
+            </div>
+            <div class="config-row">
+              <label>Right height</label>
+              <span class="ratio-display" id="right-height-display">—</span>
+            </div>
+          </div>
+          <div class="config-row">
+            <label>Column ratio (left:right)</label>
+            <span class="ratio-display" id="ratio-display">—</span>
+          </div>
         </div>
-        <div class="config-row">
-          <label for="ctrl-num-props">Properties</label>
-          <input type="number" id="ctrl-num-props" min="0" max="30" value="8" />
-        </div>
-        <button class="apply-btn" id="apply-btn">Regenerate</button>
       </div>
     </div>
 
