@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detail Page Layout</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="entity-header">
+        <span class="entity-type" id="entity-type"></span>
+        <h1 class="entity-title" id="entity-title"></h1>
+      </header>
+
+      <div class="detail-grid">
+        <section class="description-col">
+          <div class="description-body" id="description-body">
+            <p id="description-text"></p>
+          </div>
+          <button class="show-more-btn" id="show-more-btn" hidden>
+            Show more
+          </button>
+        </section>
+
+        <aside class="properties-col">
+          <dl class="property-list" id="property-list"></dl>
+        </aside>
+      </div>
+    </div>
+
+    <div class="config-panel" id="config-panel">
+      <div class="config-panel-header">
+        <span class="config-panel-title">Layout Controls</span>
+        <button class="config-toggle" id="config-toggle" aria-label="Collapse controls">▾</button>
+      </div>
+      <div class="config-body" id="config-body">
+        <div class="config-row">
+          <label for="ctrl-desc-words">Description words</label>
+          <input type="number" id="ctrl-desc-words" min="0" max="1000" value="120" />
+        </div>
+        <div class="config-row">
+          <label for="ctrl-line-clamp">Line clamp <span class="hint">(0 = off)</span></label>
+          <input type="number" id="ctrl-line-clamp" min="0" max="20" value="4" />
+        </div>
+        <div class="config-row">
+          <label for="ctrl-num-props">Properties</label>
+          <input type="number" id="ctrl-num-props" min="0" max="30" value="8" />
+        </div>
+        <button class="apply-btn" id="apply-btn">Regenerate</button>
+      </div>
+    </div>
+
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
