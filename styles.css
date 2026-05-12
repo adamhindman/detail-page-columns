@@ -4,6 +4,8 @@
   padding: 0;
 }
 
+[hidden] { display: none !important; }
+
 :root {
   --page-max-width: 1200px;
   --page-padding-x: 64px;
@@ -175,6 +177,74 @@ body {
   cursor: pointer;
 }
 
+/* ── Scorecard ── */
+
+.scorecard {
+  display: flex;
+  gap: 20px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 20px;
+  margin-top: 16px;
+}
+
+.scorecard-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.scorecard-meter {
+  display: block;
+  width: 100px;
+  height: auto;
+}
+
+.scorecard-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.scorecard-right {
+  flex: 1;
+  min-width: 0;
+}
+
+.scorecard-title {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.scorecard-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.scorecard-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.scorecard-item-name {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.4;
+}
+
+.scorecard-icon {
+  flex-shrink: 0;
+}
+
 /* ── Properties column ── */
 
 .properties-col {
@@ -315,6 +385,26 @@ body {
 .config-row .hint {
   opacity: 0.55;
   font-weight: 400;
+}
+
+.config-row--inline {
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+
+.config-row--inline label {
+  color: #e5e7eb;
+  font-size: 0.8125rem;
+  white-space: nowrap;
+}
+
+.config-row input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  cursor: pointer;
+  accent-color: #3b82f6;
 }
 
 .config-row input[type="number"] {

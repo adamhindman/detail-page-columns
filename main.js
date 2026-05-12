@@ -67,7 +67,7 @@ function randomTitle() {
 let state = {
   entityType: randomEntityType(),
   title: randomTitle(),
-  descWords: 120,
+  descWords: 500,
   lineClamp: 4,
   numProps: 8,
   expanded: false,
@@ -102,15 +102,25 @@ function updateRatio() {
       document.fonts.ready.then(() => {
         const grid = document.querySelector('.detail-grid');
         const descCol = document.querySelector('.description-col');
-        const wasStacked = grid.classList.contains('is-stacked');
-        const leftH = descCol.offsetHeight;
-        const rightH = document.querySelector('.properties-col').offsetHeight;
-        const estimatedLeftH = wasStacked ? leftH * 2 : leftH;
+        const propsCol = document.querySelector('.properties-col');
         const cutoff = parseFloat(document.getElementById('ctrl-ratio-cutoff').value) || 0.67;
-        grid.classList.toggle('is-stacked', estimatedLeftH / rightH < cutoff);
-        document.getElementById('ratio-display').textContent = (estimatedLeftH / rightH).toFixed(2);
-        document.getElementById('left-height-display').textContent = wasStacked ? `~${estimatedLeftH}px` : `${leftH}px`;
-        document.getElementById('right-height-display').textContent = `${rightH}px`;
+
+        // Remove is-stacked so we always measure at the half-width SBS column
+        // size. No paint occurs mid-function, so there is no visual flash.
+        grid.classList.remove('is-stacked');
+        const sbsLeftH = descCol.offsetHeight;
+        const sbsRightH = propsCol.offsetHeight;
+        const ratio = sbsLeftH / sbsRightH;
+        if (ratio < cutoff) {
+          grid.classList.add('is-stacked');
+        }
+
+        // Display the actual on-screen heights after the final layout is set.
+        const displayLeftH = descCol.offsetHeight;
+        const displayRightH = propsCol.offsetHeight;
+        document.getElementById('ratio-display').textContent = ratio.toFixed(2);
+        document.getElementById('left-height-display').textContent = `${displayLeftH}px`;
+        document.getElementById('right-height-display').textContent = `${displayRightH}px`;
       });
     });
   });
@@ -133,14 +143,14 @@ function renderDescription() {
   if (!descText) return;
 
   if (state.lineClamp > 0) {
+    // Count visual lines via Range before applying the clamp value.
+    // Height-based checks are unreliable with -webkit-line-clamp.
     body.classList.add('is-clamped');
+    const range = document.createRange();
+    range.selectNodeContents(text);
+    const lineCount = Array.from(range.getClientRects()).filter(r => r.width > 0).length;
     body.style.setProperty('-webkit-line-clamp', state.lineClamp);
-
-    // Only show button if content actually overflows
-    requestAnimationFrame(() => {
-      const isTruncated = body.scrollHeight > body.clientHeight + 2;
-      btn.hidden = !isTruncated;
-    });
+    btn.hidden = lineCount <= state.lineClamp;
   }
 }
 
@@ -220,11 +230,18 @@ document.querySelectorAll('.preset-btn').forEach(btn => {
   });
 });
 
+document.getElementById('ctrl-scorecard').addEventListener('change', e => {
+  document.getElementById('scorecard').hidden = !e.target.checked;
+  updateRatio();
+});
+
 document.getElementById('config-toggle').addEventListener('click', () => {
   document.getElementById('config-panel').classList.toggle('is-collapsed');
 });
 
 // ── Init ───────────────────────────────────────────────────────────────────
 
+readInputs();
+document.getElementById('scorecard').hidden = !document.getElementById('ctrl-scorecard').checked;
 generateContent();
 renderPage();

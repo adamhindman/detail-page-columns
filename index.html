@@ -24,6 +24,32 @@
           <button class="show-more-btn" id="show-more-btn" hidden>
             Show more
           </button>
+          <div class="scorecard" id="scorecard">
+            <div class="scorecard-left">
+              <img src="/images/meter.svg" class="scorecard-meter" alt="" width="100">
+            </div>
+            <div class="scorecard-right">
+              <h3 class="scorecard-title">Sustainability Index</h3>
+              <ul class="scorecard-list">
+                <li class="scorecard-item">
+                  <span class="scorecard-item-name">Data Harmonization</span>
+                  <img src="/images/check.svg" class="scorecard-icon" alt="pass" width="18" height="18">
+                </li>
+                <li class="scorecard-item">
+                  <span class="scorecard-item-name">Last Push</span>
+                  <img src="/images/check.svg" class="scorecard-icon" alt="pass" width="18" height="18">
+                </li>
+                <li class="scorecard-item">
+                  <span class="scorecard-item-name">High Metric</span>
+                  <img src="/images/x.svg" class="scorecard-icon" alt="fail" width="18" height="18">
+                </li>
+                <li class="scorecard-item">
+                  <span class="scorecard-item-name">Platform Policy Compliance</span>
+                  <img src="/images/check.svg" class="scorecard-icon" alt="pass" width="18" height="18">
+                </li>
+              </ul>
+            </div>
+          </div>
         </section>
 
         <aside class="properties-col">
@@ -41,8 +67,8 @@
         <h3>Line clamping</h3>
         <p>The description is clamped to a set number of lines. The ratio is calculated against the clamped height. Expanding via "Show more" does not affect the layout decision.</p>
         <h3>Prototype note</h3>
-        <p>In this prototype, the layout can switch between side-by-side and stacked as you adjust the controls. When the layout is already stacked, the description column is full-width and therefore shorter than it would be in side-by-side mode. To keep the ratio calculation meaningful, we double the stacked description height as a rough estimate of its side-by-side height.</p>
-        <p>In production this adjustment is unnecessary, since the layout is determined once on page load and does not change.</p>
+        <p>In this prototype, the layout can switch between side-by-side and stacked as you adjust the controls. To keep the ratio calculation accurate regardless of the current layout state, the measurement always happens in side-by-side mode: the stacked class is temporarily removed, both column heights are read (forcing a synchronous reflow), and then the class is re-added if needed. No paint occurs between these steps, so there is no visual flash.</p>
+        <p>In production this is unnecessary, since the layout is determined once on page load in side-by-side mode and does not change.</p>
       </section>
       <section class="page-body-section">
         <h2>Methods</h2>
@@ -69,7 +95,7 @@
           <div class="config-line">
             <div class="config-row">
               <label for="ctrl-desc-words">Desc words</label>
-              <input type="number" id="ctrl-desc-words" min="0" max="1000" value="120" />
+              <input type="number" id="ctrl-desc-words" min="0" max="1000" value="500" />
             </div>
             <div class="config-row">
               <label for="ctrl-line-clamp">Line clamp</label>
@@ -81,16 +107,22 @@
             </div>
             <div class="config-row">
               <label>Stack if ratio below</label>
-              <input type="number" id="ctrl-ratio-cutoff" min="0.1" step="0.05" value="0.67" />
+              <input type="number" id="ctrl-ratio-cutoff" min="0.1" step="0.05" value="0.45" />
+            </div>
+          </div>
+          <div class="config-line">
+            <div class="config-row config-row--inline">
+              <input type="checkbox" id="ctrl-scorecard" checked>
+              <label for="ctrl-scorecard">Show scorecard</label>
             </div>
           </div>
           <div class="config-line">
             <div class="config-row">
               <label>Presets</label>
               <div class="preset-btns">
-                <button class="preset-btn" data-words="120" data-clamp="10" data-props="8">Balanced</button>
+                <button class="preset-btn" data-words="500" data-clamp="10" data-props="8">Balanced</button>
                 <button class="preset-btn" data-words="3" data-clamp="10" data-props="8">Short desc</button>
-                <button class="preset-btn" data-words="120" data-clamp="10" data-props="2">Short props</button>
+                <button class="preset-btn" data-words="500" data-clamp="10" data-props="2">Short props</button>
               </div>
             </div>
           </div>
